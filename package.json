@@ -1,0 +1,18 @@
+{
+  "name": "@pitok/express-template",
+  "version": "1.0.0",
+  "type": "module",
+  "bin": {
+    "pitok-create-express": "./bin/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "chalk": "^5.4.1",
+    "commander": "^13.1.0",
+    "degit": "^2.8.4",
+    "execa": "^9.5.3"
+  }
+}
