@@ -1,48 +1,50 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
 import degit from 'degit';
+import ora from 'ora';
 import chalk from 'chalk';
+import boxen from 'boxen';
+import symbols from 'log-symbols';
 import { execa } from 'execa';
-import path from 'path';
 
 const program = new Command();
 program
     .name('pitok-create-express')
     .argument('<project-name>')
     .action(async (name) => {
-        console.log(chalk.green(`\n📦 Membuat project ${name}...`));
+        console.log(chalk.cyan.bold('\n🚀 Pitok Express CLI\n'));
 
-        // 1. Clone template
-        const emitter = degit('PitokDf/express-template/express', {
-            force: true,
-            cache: false,
-            verbose: true,
-        });
+        // Spinner clone
+        const spinClone = ora('Cloning template...').start();
+        const emitter = degit('PitokDf/express-template', { force: true });
         try {
             await emitter.clone(name);
-            console.log(chalk.blue(`\n✅ Scaffold selesai!`));
-        } catch (err) {
-            console.error(chalk.red('Clone gagal:'), err);
+            spinClone.succeed(' Scaffold selesai!');
+        } catch (e) {
+            spinClone.fail(' Clone gagal');
             process.exit(1);
         }
 
-        // 2. Install dependencies
-        console.log(chalk.yellow(`\n🔧 Installing packages...`));
+        // Spinner install
+        const spinInstall = ora('Installing packages...').start();
         try {
-            await execa('npm', ['install'], {
-                cwd: path.resolve(process.cwd(), name),
-                stdio: 'inherit',
-            });
-            console.log(chalk.green(`\n✅ Packages ter-install!`));
-        } catch (err) {
-            console.error(chalk.red('Install gagal:'), err);
+            await execa('npm', ['install'], { cwd: name, stdio: 'inherit' });
+            spinInstall.succeed(' Dependencies ter-install');
+        } catch {
+            spinInstall.fail(' Install gagal');
             process.exit(1);
         }
 
-        // 3. Selesai
-        console.log(chalk.blue(`\n🚀 Project ${name} siap digunakan! Run:`));
-        console.log(`   cd ${name}`);
-        console.log(`   npm run dev\n`);
+        // Boxen finish
+        console.log(
+            boxen(
+                chalk.green(`\nProject ${name} siap digunakan!`) +
+                '\n' +
+                chalk.yellow(`cd ${name}\n`) +
+                chalk.blue(`npm run dev`),
+                { padding: 1, borderColor: 'green', borderStyle: 'round' }
+            )
+        );
     });
 
 program.parse();

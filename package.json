@@ -1,6 +1,6 @@
 {
-  "name": "@pitok/express-template",
-  "version": "1.0.0",
+  "name": "pitok-create-express",
+  "version": "1.1.1",
   "type": "module",
   "bin": {
     "pitok-create-express": "./bin/index.js"
@@ -10,9 +10,12 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "boxen": "^8.0.1",
     "chalk": "^5.4.1",
     "commander": "^13.1.0",
     "degit": "^2.8.4",
-    "execa": "^9.5.3"
+    "execa": "^9.5.3",
+    "log-symbols": "^7.0.0",
+    "ora": "^8.2.0"
   }
 }
